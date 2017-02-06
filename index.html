@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Decisions</title>
+ </head>
+ <link rel="stylesheet" type="text/css" href="style.css">
+ <body>
+   <div>
+     <button class='backBtn' onclick="previousSlide()">Back</button>
+     <div>
+       <span class='leftSide'>
+         <br>
+         <div class='promptText' id="slide1" style="display:block">This is slide1</div>
+         <div class="promptText" id='slide2'>This is slide2</div>
+         <div class="promptText" id="slide3">This is slide3</div>
+         <br>
+         <button class='nextBtn' onclick="nextSlide()">
+           Next
+         </button>
+       </span>
+       <span class='rightSide'>
+         a graph goes here
+       </span>
+
+     </div>
+
+   </div>
+
+   <script>
+   var slides = ['slide1','slide2','slide3'];
+   var currentSlide = 'slide1';
+   //nextSlide function
+   function nextSlide() {
+    document.getElementById(currentSlide).style.display="none";
+    currentSlide = slides[slides.indexOf(currentSlide)+1];
+    document.getElementById(currentSlide).style.display="block";
+
+   }
+   //previousSlide function
+   function previousSlide() {
+     document.getElementById(currentSlide).style.display="none";
+     currentSlide = slides[slides.indexOf(currentSlide)-1];
+     document.getElementById(currentSlide).style.display="block";
+
+   }
+   function drawGraph() {
+
+
+   }
+   </script>
+ </body>
+</html>
