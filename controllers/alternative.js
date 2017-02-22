@@ -5,62 +5,25 @@
 
 var math = require('mathjs');
 class Alternative {
-  constructor(name) {
+  constructor(name, topic) {
     this.name       = name;
-    this.attributes = [];   //[att1: value1, att2: value2, ...]
-    this.weights    = [];   //[att1: weight1, att2: weight2, ...]
-    this.utility    = 0;
-    this.cost       = 0;
-  };
-  setAttributes(attributes) {
-    this.attributes = attributes;
-  };
-  setWeights() {
-    //Generate pairwise comparisons, Analytic Hierarchy Process (AHP)
-    var attLen = this.attributes.length;
-    var weightMatrix = math.ones(attLen);
-    for (var i = 0; i < attLen; i++) {
-      var row = [];
-      for (var j = 0; j < attLen; j++) {
-        //Diagonals can be skipped because default matrix is ones
-        if (i == j) {
-          break;
-        }
-        //Set entries below the diagonal via 1/inverse
-        if (j < i) {
-          row[j] = 1/weightMatrix[j][i];
-        }
-        else {
-          //Present to user, get input
-          userInput = 7; //TODO
-          weightMatrix[i][j] = userInput;
-        }
-      }
-      weightMatrix[i] = row;
-    }
-    //Normalize by columns (?)
-    var colSums = {};
-    for (var i = 0; i < attLen; i++) {
-      var tempArr = weightMatrix.subset(math.index([0, attLen], i));
-      colSums[i] = sum(tempArr);
-    }
-    var normWeightMatrix = math.ones(attLen);
-    for (var i = 0; i < attLen; i++) {
-      for (var j = 0; j < attLen; j++) {
-        normWeightMatrix[i][j] = weightMatrix[i][j]/colSums[i];
-      }
-    }
-    //Find average of each row
-    //Row average = attribute weight
-    for (var i = 0; i < attLen; i++) {
-      var tempArr = weightMatrix.subset(math.index(i, [0, attLen]));
-      this.weights[attributes[i]] = avg(tempArr);
-    }
-
-  };
-  setCost(cost) {
-    this.cost = cost;
-  };
-};
+    this.parent     = topic;  //Topic object -> think linked lists
+    this.values     = {};     //[{att1: [v1, [v11, v12]], ...}
+    this.utility    = null;
+    this.cost       = null;
+  }
+  getAttributes() {
+    //for all of the children of this.parent
+    //if child has children, recurse
+    //else, add to values as keys with user input as values
+    return null;
+  }
+  setUtility() {
+    //for all of the children of this.parent
+    //if child has children recurse
+    //else, set value = sum(weight*value) for all children
+    return null;
+  }
+}
 
 module.exports = Alternative;

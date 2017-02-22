@@ -2,6 +2,8 @@
 
 //==============================================================================
 
+var Topic = require('../controllers/topic');
+var Attribute = require('../controllers/attribute');
 var Alternative = require('../controllers/alternative');
 var altTest = new Alternative('first');
 var alternatives = [];
