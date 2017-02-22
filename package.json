@@ -1,0 +1,26 @@
+{
+  "name": "tool-decide",
+  "version": "0.0.1",
+  "description": "Browser tool to quantify decisions",
+  "engines": {
+    "node": "6.9.5"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "socket.io": "^1.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nobleator/tool-decide"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}
