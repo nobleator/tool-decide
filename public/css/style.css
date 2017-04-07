@@ -11,6 +11,9 @@ body {
   border-width: 1em;
   float: center;
 }
+input[type=text]:focus, input[type=submit]:focus{
+    border: 3px solid #555;
+}
 .backBtn, .nextBtn{
   color: white;
   background-color: #004d99;
@@ -26,6 +29,7 @@ body {
   text-align: center;
   border-radius: 1em;
   border: 1px solid #004d99;
+  background-color: #cc99ff;
   padding: 5em;
   height: 50%;
   width: 100%;
@@ -38,4 +42,12 @@ body {
   text-align: center;
   width: 50%;
   float: right;
+}
+.graphBox {
+  text-align: center;
+  align-self:auto;
+  width: 33%;
+  background-color: #cc99ff;
+  padding: 1em;
+
 }

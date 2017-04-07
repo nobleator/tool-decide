@@ -14,17 +14,52 @@
        <span class='leftSide'>
          <br>
          <!--All slides belong here. only one slide should be visible at a time-->
-         <div class='promptText' id="slide1" style="display:block">This is slide1</div>
-         <div class="promptText" id='slide2'>This is slide2</div>
-         <div class="promptText" id="slide3">This is slide3</div>
+         <!-- Slide 1 -->
+         <div class='promptText' id="slide1" style="display:block">
+           <form>
+             Input a number:<br>
+             <input type='text' id='slide1input'><br>
+             <input type="button" value='submit' onclick='storeNum()'><br>
+           </form>
+           This is slide1</div>
+
+           <!-- slide 2 -->
+           <div class="promptText" id='slide2'>
+           <form>
+             Input a number:<br>
+             <input type='text' id='slide2input'><br>
+             <input type="button" value='Submit' onclick='storeNum()'><br>
+           </form>
+           This is slide2</div>
+
+           <!-- slide 3 -->
+         <div class="promptText" id="slide3">
+           <form>
+             Input a number:<br>
+             <input type='text' id='slide3input'><br>
+             <input type="button" value='submit' onclick='storeNum()'><br>
+           </form>
+           This is slide3</div>
          <br>
          <!--This button cycles through to the next slide-->
          <button class='nextBtn' onclick="nextSlide()">
            Next
          </button>
        </span>
-       <span class='rightSide'>
-         a graph goes here
+       <!--This is the right-hand side of the page. we can put a graph or table here-->
+       <span class='rightSide' id='rightSide'>
+         a graph or something goes here<br>
+         <span class='graphBox' id="gb1">
+           gb1<br>
+         </span>
+         <span class='graphBox' id="gb2">
+           gb2<br>
+         </span>
+         <span class='graphBox' id="gb3">
+           gb3<br>
+         </span>
+
+
        </span>
 
      </div>

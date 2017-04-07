@@ -1,4 +1,5 @@
 var slides = ['slide1','slide2','slide3'];
+var userNums = {};
 var currentSlide = 'slide1';
 //nextSlide function
 function nextSlide() {
@@ -24,7 +25,23 @@ function previousSlide() {
 
   }
 }
-function drawGraph() {
+function updateGraph() {
+// clear graph
+// using number of keys in userNums as a counter, iterate through
+// slides creating tree graph of userNums values
+// e.g. for slide in slides {create block for usernums[slide]}
 
+// for now, update graph just creates a div of usernums
+var node = document.createElement("span");
+var textNode = document.createTextNode(currentSlide+' = '+userNums[currentSlide]);
+node.appendChild(textNode);
+document.rightSide.appendChild(node);
+}
 
+function storeNum() {
+  // Stores user input into dictionary userNums
+  userNums[currentSlide] = document.getElementById(currentSlide + "input").value;
+  nextSlide();
+  updateGraph(); //TODO create function to rebuild graph each time a number is added
+  //alert(userNums[currentSlide]);
 }
