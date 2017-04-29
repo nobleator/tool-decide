@@ -1,0 +1,31 @@
+<!--
+views/index.html
+-->
+<html>
+ <head>
+  <title>Sample Project</title>
+ </head>
+
+ <link rel='stylesheet' type='text/css' href='/public/css/style.css'/>
+ <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js'></script>
+
+ <body>
+   <div ng-app='myApp'>
+     <form>
+       <div ng-controller='topicCtrl'>
+         <label>First Name:
+           <input type='text' ng-model='data.firstName' placeholder='James'>
+         </label>
+         <label>Last Name:
+           <input type='text' ng-model='data.lastName' placeholder='Bond'>
+         </label>
+         <input type='submit' value='Submit' ng-click='submit()'/><br>
+         <br>Full Name: {{ display() }}
+       </div>
+     </form>
+   </div>
+
+  <script src='/controllers/main.js'></script>
+
+  </body>
+</html>
