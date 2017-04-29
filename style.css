@@ -1,9 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #ecf0f1;
+  text-align: center;
+}
 .navigation {
   text-align: center;
-	position: fixed;
-	width: 100%;
+	min-width: 100%;
 	background-color: #2c3e50;
-  color: #ecf0f1;
   font-size: 150%;
 	font-family: 'Open Sans', sans-serif;
 	line-height: 2em;
@@ -11,17 +15,24 @@
 	padding: 0.5em;
 	color: #ecf0f1;
 }
-#page-content {
-  padding-top: 10%;
+/*#page-content {
+  height: 100%;
+  width: 100%;
   background-color: #ecf0f1;
   text-align: center;
-}
+}*/
 .slide {
   color: #2c3e50;
   border: 1px solid;
 	border-color: #484848;
 	border-radius: 25px;
-	padding: 20px;
+	padding: 5%;
+  margin: 5%;
 	position: relative;
 	z-index: 9;
+}
+#resultsChart {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
 }

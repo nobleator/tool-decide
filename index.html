@@ -15,15 +15,17 @@
   </script>
   <script src='app.js'></script>
   <script
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.12.1/math.min.js">
+  src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.12.1/math.min.js'>
   </script>
+  <!-- Plotly.js -->
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
 </head>
 
 <body ng-app='dtApp'>
 
   <div class='navigation'>
-    YOU DECIDE!!!
+    Decisions, Decisions...
   </div>
 
   <div id='page-content'>
@@ -78,7 +80,8 @@
       </div>
       <!-- Results div -->
       <div ng-show='showResults' class='slide'>
-        Results go here
+        <div id='resultsChart'></div>
+        <!-- TODO: Sortable results table -->
         <pre>
           {{ alternatives | json }}
         </pre>
@@ -88,6 +91,5 @@
     </div>
 
   </div>
-
 </body>
 </html>
