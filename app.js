@@ -135,7 +135,7 @@ dtApp.controller('mainCtrl', function($scope) {
 
     var temp = {name: $scope.alternativeName,
                 utility: tUtility,
-                cost: $scope.alternativeCost,
+                cost: parseFloat($scope.alternativeCost),
                 values: newVals}
     $scope.alternatives.push(temp);
     $scope.alternativeName = '';
@@ -146,13 +146,45 @@ dtApp.controller('mainCtrl', function($scope) {
   };
   //
   $scope.doneAlternative = function() {
-    // TODO: Calculate results and display
+    var data = [];
+    for (var i = 0; i < $scope.alternatives.length; i++) {
+      var tempData = {x: [$scope.alternatives[i].cost],
+                      y: [$scope.alternatives[i].utility],
+                      name: $scope.alternatives[i].name,
+                      mode: 'scatter'};
+      data.push(tempData);
+    }
+    console.log(data);
+
+    // TODO: Draw Pareto curve
+    // TODO: Center and auto-resize (width: 100%, height: auto) chart
+    var layout = {
+      title:'Results - Utility vs Cost',
+      height: 400,
+      width: 480,
+      xaxis: {
+        title: 'Cost'
+      },
+      yaxis: {
+        title: 'Utility'
+      }
+    };
+
+    Plotly.newPlot('resultsChart', data, layout);
+
     $scope.showAlternatives = false;
     $scope.showResults = true;
   };
   //
   $scope.doneResult = function() {
-    //
+    // TODO: Save results somewhere to access later?
+    // Zero out fields
+    $scope.topic = {name: '', children: [], weights: {}};
+    $scope.alternatives = [];
+    $scope.alternativeName = '';
+    $scope.alternativeCost = '';
+    $scope.vals = {};
+
     $scope.showResults = false;
     $scope.showTopic = true;
   };
