@@ -1,0 +1,93 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang='en-us'>
+<head>
+
+  <title>Decision Analysis Tool</title>
+
+  <!-- CSS -->
+  <link rel='stylesheet' href='style.css'>
+
+  <!-- Angular JS -->
+  <script
+  src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js'>
+  </script>
+  <script src='app.js'></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.12.1/math.min.js">
+  </script>
+
+</head>
+
+<body ng-app='dtApp'>
+
+  <div class='navigation'>
+    YOU DECIDE!!!
+  </div>
+
+  <div id='page-content'>
+
+    <div ng-controller='mainCtrl'>
+      <!-- Topic div -->
+      <div ng-show='showTopic' class='slide'>
+        Topic name:
+        <form name='topicForm' ng-submit='submitTopic()'>
+          <input type='text' ng-model='topicName' />
+          <input type='submit' id='submit' value='Next' />
+        </form>
+      </div>
+
+      <!-- Attributes div -->
+      <div ng-show='showAttributes' class='slide'>
+        Attribute (or critera) name:
+        <form name='attributeForm' ng-submit='submitAttribute()'>
+          <input type='text' ng-model='attributeName'/>
+          <input type='submit' id='submit' value='Submit Attribute' />
+          <input type='button' value='Next' ng-click='doneAttribute()'/>
+        </form>
+      </div>
+
+      <!-- Weights div -->
+      <div ng-show='showWeights' class='slide'>
+        Drag the slider towards the attribute you care more about.
+        <div ng-repeat='elem in elemList'>
+          {{ elem.pair.leftVal }}
+          <!-- TODO: Default value -->
+          <!-- TODO: Display current value -->
+          <input type='range' min='1' max='9' ng-model='elem.comparison'/>
+          {{ elem.pair.rightVal }}
+          <!--<input type='submit' id='submit' value='Submit Weight' />-->
+        </div>
+        <input type='button' value='Next' ng-click='submitWeight()'/>
+      </div>
+
+      <!-- Alternatives div -->
+      <div ng-show='showAlternatives' class='slide'>
+        Alternative name and cost:
+        <form name='alternativeForm' ng-submit='submitAlternative()'>
+          <input type='text' ng-model='alternativeName'/>
+          <input type='text' ng-model='alternativeCost'/>
+          <div ng-repeat='child in vals'>
+            {{ child.name }} value:
+            <input type='text' ng-model='child.value'/>
+          </div>
+          <input type='submit' id='submit' value='Submit Alternative' />
+        </form>
+        <input type='button' value='Next' ng-click='doneAlternative()'/>
+      </div>
+      <!-- Results div -->
+      <div ng-show='showResults' class='slide'>
+        Results go here
+        <pre>
+          {{ alternatives | json }}
+        </pre>
+        <input type='button' value='Done' ng-click='doneResult()'/>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
