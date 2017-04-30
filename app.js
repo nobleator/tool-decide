@@ -9,9 +9,10 @@ dtApp.controller('mainCtrl', function($scope) {
   console.log('In mainCtrl...');
   $scope.topic = {name: '', children: [], weights: {}};
   /*
-  $scope.alternatives = [{alternative_name: name,
+  $scope.alternatives = [{name: name,
                         utility: 0,
                         cost: 0,
+                        utilityPerCost: 0,
                         values: {child_name: value}}]
   */
   $scope.alternatives = [];
@@ -132,10 +133,11 @@ dtApp.controller('mainCtrl', function($scope) {
       var child = $scope.topic.children[i];
       tUtility += newVals[child]*$scope.topic.weights[child];
     }
-
+    var tCost = parseFloat($scope.alternativeCost);
     var temp = {name: $scope.alternativeName,
                 utility: tUtility,
-                cost: parseFloat($scope.alternativeCost),
+                cost: tCost,
+                utilityPerCost: tUtility/tCost,
                 values: newVals}
     $scope.alternatives.push(temp);
     $scope.alternativeName = '';
@@ -171,6 +173,11 @@ dtApp.controller('mainCtrl', function($scope) {
     };
 
     Plotly.newPlot('resultsChart', data, layout);
+
+    // TODO: Style results table
+    // Starting sorting field and direction
+    $scope.orderByField = 'name';
+    $scope.ascending = false;
 
     $scope.showAlternatives = false;
     $scope.showResults = true;
