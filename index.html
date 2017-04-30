@@ -33,18 +33,22 @@
     <div ng-controller='mainCtrl'>
       <!-- Topic div -->
       <div ng-show='showTopic' class='slide'>
-        Topic name:
+        Topic
+        <br />
         <form name='topicForm' ng-submit='submitTopic()'>
-          <input type='text' ng-model='topicName' />
+          <label for='topic'>Topic name:</label>
+          <input type='text' id='topic' placeholder='e.g. Cars' ng-model='topicName' />
           <input type='submit' id='submit' value='Next' />
         </form>
       </div>
 
       <!-- Attributes div -->
       <div ng-show='showAttributes' class='slide'>
-        Attribute (or critera) name:
+        Attributes
+        <br />
         <form name='attributeForm' ng-submit='submitAttribute()'>
-          <input type='text' ng-model='attributeName'/>
+          <label for='attribute'>Attribute name:</label>
+          <input type='text' id='attribute' placeholder='e.g. MPG' ng-model='attributeName'/>
           <input type='submit' id='submit' value='Submit Attribute' />
           <input type='button' value='Next' ng-click='doneAttribute()'/>
         </form>
@@ -52,7 +56,10 @@
 
       <!-- Weights div -->
       <div ng-show='showWeights' class='slide'>
+        Attributes
+        <br />
         Drag the slider towards the attribute you care more about.
+        <br />
         <div ng-repeat='elem in elemList'>
           {{ elem.pair.leftVal }}
           <!-- TODO: Default value -->
@@ -66,10 +73,16 @@
 
       <!-- Alternatives div -->
       <div ng-show='showAlternatives' class='slide'>
-        Alternative name and cost:
+        Alternatives
+        <br />
         <form name='alternativeForm' ng-submit='submitAlternative()'>
-          <input type='text' ng-model='alternativeName'/>
-          <input type='text' ng-model='alternativeCost'/>
+          <label for='altName'>Name:</label>
+          <input type='text' id='altName' placeholder='e.g. Honda Civic' ng-model='alternativeName'/>
+          <br />
+          <label for='altCost'>Cost:</label>
+          <!-- TODO: Update placeholder to currency -->
+          <input type='text' id='altCost' placeholder='e.g. 3000' ng-model='alternativeCost'/>
+          <br />
           <div ng-repeat='child in vals'>
             {{ child.name }} value:
             <input type='text' ng-model='child.value'/>
@@ -80,11 +93,36 @@
       </div>
       <!-- Results div -->
       <div ng-show='showResults' class='slide'>
+        Results
+        <br />
         <div id='resultsChart'></div>
         <!-- TODO: Sortable results table -->
-        <pre>
-          {{ alternatives | json }}
-        </pre>
+        <table id='resultsTable'>
+          <thead>
+            <tr>
+              <th>
+                <a href='#' ng-click='orderByField="name";ascending=!ascending;'>Name</a>
+              </th>
+              <th>
+                <a href='#' ng-click='orderByField="utility";ascending=!ascending;'>Utility</a>
+              </th>
+              <th>
+                <a href='#' ng-click='orderByField="cost";ascending=!ascending;'>Cost</a>
+              </th>
+              <th>
+                <a href='#' ng-click='orderByField="utilityPerCost";ascending=!ascending;'>Utility/Cost</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat='alt in alternatives | orderBy:orderByField:ascending'>
+              <td>{{ alt.name }}</td>
+              <td>{{ alt.utility }}</td>
+              <td>{{ alt.cost }}</td>
+              <td>{{ alt.utilityPerCost }}</td>
+            </tr>
+          </tbody>
+        </table>
         <input type='button' value='Done' ng-click='doneResult()'/>
       </div>
 
