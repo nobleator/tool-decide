@@ -27,7 +27,7 @@
   <div class='navigation'>
     <!-- TODO: Move logo to external file, use here -->
     <!-- <svg class='logo'><use xlink:href='#logo-ben'/></svg> -->
-    <a href='http://www.nobleguy.me'>Home</a>
+    <a href='http://www.nobleguy.me'><img src='logo.svg' /></a>
     <span>Decisions, Decisions...</span>
   </div>
 
@@ -36,22 +36,20 @@
     <div ng-controller='mainCtrl'>
       <!-- Topic div -->
       <div ng-show='showTopic' class='slide'>
-        Topic
-        <br />
+        <h1>Topic</h1>
         <form name='topicForm' ng-submit='submitTopic()'>
           <label for='topic'>Topic name:</label>
-          <input type='text' id='topic' placeholder='e.g. Cars' ng-model='topicName' />
+          <input type='text' id='topic' placeholder='e.g. Cars' ng-model='topicName' required />
           <input type='submit' id='submit' value='Next' />
         </form>
       </div>
 
       <!-- Attributes div -->
       <div ng-show='showAttributes' class='slide'>
-        Attributes
-        <br />
+        <h1>Attributes</h1>
         <form name='attributeForm' ng-submit='submitAttribute()'>
           <label for='attribute'>Attribute name:</label>
-          <input type='text' id='attribute' placeholder='e.g. MPG' ng-model='attributeName'/>
+          <input type='text' id='attribute' placeholder='e.g. MPG' ng-model='attributeName' required />
           <input type='submit' id='submit' value='Submit Attribute' />
           <input type='button' value='Next' ng-click='doneAttribute()'/>
         </form>
@@ -59,15 +57,14 @@
 
       <!-- Weights div -->
       <div ng-show='showWeights' class='slide'>
-        Attributes
-        <br />
+        <h1>Attributes</h1>
         Drag the slider towards the attribute you care more about.
         <br />
         <div ng-repeat='elem in elemList'>
           {{ elem.pair.leftVal }}
           <!-- TODO: Default value -->
           <!-- TODO: Display current value -->
-          <input type='range' min='1' max='9' ng-model='elem.comparison'/>
+          <input type='range' min='1' max='9' ng-model='elem.comparison' required />
           {{ elem.pair.rightVal }}
           <!--<input type='submit' id='submit' value='Submit Weight' />-->
         </div>
@@ -76,19 +73,18 @@
 
       <!-- Alternatives div -->
       <div ng-show='showAlternatives' class='slide'>
-        Alternatives
-        <br />
+        <h1>Alternatives</h1>
         <form name='alternativeForm' ng-submit='submitAlternative()'>
           <label for='altName'>Name:</label>
-          <input type='text' id='altName' placeholder='e.g. Honda Civic' ng-model='alternativeName'/>
+          <input type='text' id='altName' placeholder='e.g. Honda Civic' ng-model='alternativeName' required />
           <br />
           <label for='altCost'>Cost:</label>
           <!-- TODO: Update placeholder to currency -->
-          <input type='text' id='altCost' placeholder='e.g. 3000' ng-model='alternativeCost'/>
+          <input type='number' id='altCost' placeholder='e.g. 3000' ng-model='alternativeCost' required />
           <br />
           <div ng-repeat='child in vals'>
             {{ child.name }} value:
-            <input type='text' ng-model='child.value'/>
+            <input type='number' ng-model='child.value' required />
           </div>
           <input type='submit' id='submit' value='Submit Alternative' />
         </form>
@@ -96,10 +92,9 @@
       </div>
       <!-- Results div -->
       <div ng-show='showResults' class='slide'>
-        Results
-        <br />
+        <h1>Results</h1>
         <div id='resultsChart'></div>
-        <!-- TODO: Sortable results table -->
+        <br />
         <table id='resultsTable'>
           <thead>
             <tr>
