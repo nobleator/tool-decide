@@ -15,8 +15,14 @@ html, body {
 	padding: 0.5em;
 	color: #ecf0f1;
 }
+.navigation img {
+  vertical-align: middle;
+	max-height: 2em;
+	max-width: 2em;
+}
 .navigation a {
   text-decoration: none;
+  padding-left: 1em;
   padding-right: 1em;
   color: #ecf0f1;
 }
@@ -24,12 +30,12 @@ html, body {
 	padding-left: 1em;
 	border-left: 3px solid #ecf0f1;
 }
-/*#page-content {
-  height: 100%;
-  width: 100%;
-  background-color: #ecf0f1;
-  text-align: center;
-}*/
+#page-content h1 {
+  font-size: 150%;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 2em;
+  color: #2c3e50;
+}
 .slide {
   color: #2c3e50;
   border: 1px solid;
