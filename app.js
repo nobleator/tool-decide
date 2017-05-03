@@ -105,7 +105,7 @@ dtApp.controller('mainCtrl', function($scope) {
       $scope.topic.weights[$scope.topic.children[i]] = rowAvg[i];
     }
 
-    // TODO: Issue with ng-repeat and objects vs lists
+    // TODO: Issue with ng-repeat and objects vs lists -> Resolved?
     $scope.vals = [];
     for (var i = 0; i < listLen; i++) {
       var temp = {name: $scope.topic.children[i],
@@ -126,7 +126,7 @@ dtApp.controller('mainCtrl', function($scope) {
     for (var i = 0; i < $scope.vals.length; i++) {
       newVals[$scope.vals[i].name] = $scope.vals[i].value;
     }
-    // TODO: Calculate utility
+    // TODO: Calculate utility -> Complete?
     var tUtility = 0;
     var listLen = $scope.topic.children.length;
     for (var i = 0; i < listLen; i++) {
@@ -148,32 +148,48 @@ dtApp.controller('mainCtrl', function($scope) {
   };
   //
   $scope.doneAlternative = function() {
-    var data = [];
+    var chartData = [];
     for (var i = 0; i < $scope.alternatives.length; i++) {
-      var tempData = {x: [$scope.alternatives[i].cost],
-                      y: [$scope.alternatives[i].utility],
-                      name: $scope.alternatives[i].name,
-                      mode: 'scatter'};
-      data.push(tempData);
+      var tempData = {label: $scope.alternatives[i].name,
+                      data: [{
+                        x: $scope.alternatives[i].cost,
+                        y: $scope.alternatives[i].utility}]
+                      };
+      chartData.push(tempData);
     }
-    console.log(data);
+    console.log(chartData);
 
     // TODO: Draw Pareto curve
     // TODO: Center and auto-resize (width: 100%, height: auto) chart
-    var layout = {
-      title:'Results - Utility vs Cost',
-      height: 400,
-      width: 480,
-      xaxis: {
-        title: 'Cost'
+    var scatterChart = new Chart('resultsChart', {
+      type: 'bubble',
+      data: {
+        datasets: chartData
       },
-      yaxis: {
-        title: 'Utility'
+      options: {
+        title: {
+          display: true,
+          text: 'Utility vs Cost'
+        },
+        scales: {
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              display: true,
+              labelString: 'Utility'
+            }
+          }],
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'Cost'
+            }
+          }]
+        }
       }
-    };
-
-    Plotly.newPlot('resultsChart', data, layout);
-
+    });
     // TODO: Style results table
     // Starting sorting field and direction
     $scope.orderByField = 'name';

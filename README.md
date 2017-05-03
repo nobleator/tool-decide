@@ -10,14 +10,15 @@ Go to: https://murmuring-tundra-71478.herokuapp.com, follow the instructions.
 ### v1.0
 - [x] Manual entry
 - [x] Scatter plot and table of results
-- [ ] Input validation
+- [x] Input validation
 ### v2.0
 - [ ] Auto-import data
 - [ ] User accounts
-- [ ] Persistent (saved in a database) results
+- [ ] Persistent results
 - [ ] Sub-attributes
 - [ ] Ascending vs descending attributes (i.e. high cost of living = bad, high school quality = good)
 - [ ] Tree graph of attributes
+- [ ] Export results
 
 ## License
 Copyright (c) 2017 nobleator

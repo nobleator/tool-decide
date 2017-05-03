@@ -6,19 +6,23 @@
 
   <title>Decision Analysis Tool</title>
 
-  <!-- CSS -->
-  <link rel='stylesheet' href='style.css'>
-
   <!-- Angular JS -->
   <script
   src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js'>
   </script>
-  <script src='app.js'></script>
+  <!-- Math JS -->
   <script
   src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.12.1/math.min.js'>
   </script>
-  <!-- Plotly.js -->
-  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <!-- Chart JS -->
+  <script
+  src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'>
+  </script>
+
+  <!-- JS -->
+  <script src='app.js'></script>
+  <!-- CSS -->
+  <link rel='stylesheet' href='style.css'>
 
 </head>
 
@@ -93,7 +97,7 @@
       <!-- Results div -->
       <div ng-show='showResults' class='slide'>
         <h1>Results</h1>
-        <div id='resultsChart'></div>
+        <canvas id='resultsChart'></canvas>
         <br />
         <table id='resultsTable'>
           <thead>
