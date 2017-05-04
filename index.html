@@ -29,8 +29,6 @@
 <body ng-app='dtApp'>
 
   <div class='navigation'>
-    <!-- TODO: Move logo to external file, use here -->
-    <!-- <svg class='logo'><use xlink:href='#logo-ben'/></svg> -->
     <a href='http://www.nobleguy.me'><img src='logo.svg' /></a>
     <span>Decisions, Decisions...</span>
   </div>
@@ -70,7 +68,6 @@
           <!-- TODO: Display current value -->
           <input type='range' min='1' max='9' ng-model='elem.comparison' required />
           {{ elem.pair.rightVal }}
-          <!--<input type='submit' id='submit' value='Submit Weight' />-->
         </div>
         <input type='button' value='Next' ng-click='submitWeight()'/>
       </div>
