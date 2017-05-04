@@ -119,9 +119,6 @@ dtApp.controller('mainCtrl', function($scope) {
 
   $scope.submitAlternative = function() {
     //
-    //$scope.alternativeName = '';
-    //$scope.alternativeCost = 0;
-    //$scope.vals = {};
     var newVals = {};
     for (var i = 0; i < $scope.vals.length; i++) {
       newVals[$scope.vals[i].name] = $scope.vals[i].value;
@@ -150,19 +147,25 @@ dtApp.controller('mainCtrl', function($scope) {
   $scope.doneAlternative = function() {
     var chartData = [];
     for (var i = 0; i < $scope.alternatives.length; i++) {
+      // TODO: Better color generation
+      // Generate a new random color for each alternative
+      var color = 'rgba(';
+      color += String(85*(i/$scope.alternatives.length)) + ',';
+      color += String(85*(i/$scope.alternatives.length)) + ',';
+      color += String(255*(i/$scope.alternatives.length)) + ',';
+      color += '0.5)';
       var tempData = {label: $scope.alternatives[i].name,
                       data: [{
                         x: $scope.alternatives[i].cost,
-                        y: $scope.alternatives[i].utility}]
+                        y: $scope.alternatives[i].utility}],
+                      backgroundColor: color
                       };
       chartData.push(tempData);
     }
-    console.log(chartData);
 
     // TODO: Draw Pareto curve
-    // TODO: Center and auto-resize (width: 100%, height: auto) chart
     var scatterChart = new Chart('resultsChart', {
-      type: 'bubble',
+      type: 'scatter',
       data: {
         datasets: chartData
       },
@@ -200,7 +203,7 @@ dtApp.controller('mainCtrl', function($scope) {
   };
   //
   $scope.doneResult = function() {
-    // TODO: Save results somewhere to access later?
+    // TODO: Save results somewhere to access later? -> v2.0
     // Zero out fields
     $scope.topic = {name: '', children: [], weights: {}};
     $scope.alternatives = [];
