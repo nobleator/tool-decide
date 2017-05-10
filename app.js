@@ -52,12 +52,12 @@ dtApp.controller('mainCtrl', function($scope) {
 
   $scope.submitAutoTopic = function() {
     console.log($scope.topicSelection);
-    $scope.data.name = $scope.topicSelection;
+    $scope.data.name = $scope.topicSelection.name;
+    $scope.data.children = $scope.topicSelection.criteria;
 
     $scope.visible.topic = false;
-    $scope.visible.weights = true;
-  }
-
+    $scope.visible.attributes = true;
+  };
   // On submit, set/change topic name
   $scope.submitManualTopic = function() {
     // data.name refers to the name field in the topic object
@@ -67,6 +67,12 @@ dtApp.controller('mainCtrl', function($scope) {
     // Change slide visibility
     $scope.visible.topic = false;
     $scope.visible.attributes = true;
+  };
+
+  $scope.submitAutoAttribute = function() {
+
+    $scope.visible.attributes = false;
+    $scope.visible.weights = true;
   };
   // On submit, add attributes
   $scope.submitManualAttribute = function() {
