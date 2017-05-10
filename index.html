@@ -30,58 +30,84 @@
 
   <div class='navigation'>
     <a href='http://www.nobleguy.me'><img src='logo.svg' /></a>
-    <span>Decisions, Decisions...</span>
+    <span>Make Decisions, Make Sense</span>
   </div>
 
   <div id='page-content'>
 
     <div ng-controller='mainCtrl'>
+      <!-- Select automatic or manual entry -->
+      <div ng-show='visible.type' class='slide'>
+        <h1>Type of Entry</h1>
+        <input type='button' value='Automatic' ng-click='automatic()' /> or
+        <input type='button' value='Manual' ng-click='manual()' />
+      </div>
+
       <!-- Topic div -->
-      <div ng-show='showTopic' class='slide'>
-        <h1>Topic</h1>
-        <form name='topicForm' ng-submit='submitTopic()'>
-          <label for='topic'>Topic name:</label>
-          <input type='text' id='topic' placeholder='e.g. Cars' ng-model='topicName' required />
+      <div ng-show='visible.auto && visible.topic' class='slide'>
+        <h1>Automatic Topic Selection</h1>
+        <form ng-submit='submitAutoTopic()'>
+          <select ng-model='topicSelection'
+                  ng-options='aT.name for aT in autoTopics'>
+          </select>
+          <input type='submit' id='submit' value='Submit Topic' />
+        </form>
+      </div>
+
+      <div ng-show='visible.manual && visible.topic' class='slide'>
+        <h1>Manual Topic Entry</h1>
+        <form ng-submit='submitManualTopic()'>
+          <label for='manualTopic'>Topic name:</label>
+          <input type='text' id='manualTopic' placeholder='e.g. Cars'
+                ng-model='topicSelection' required />
           <input type='submit' id='submit' value='Next' />
         </form>
       </div>
 
       <!-- Attributes div -->
-      <div ng-show='showAttributes' class='slide'>
-        <h1>Attributes</h1>
-        <form name='attributeForm' ng-submit='submitAttribute()'>
-          <label for='attribute'>Attribute name:</label>
-          <input type='text' id='attribute' placeholder='e.g. MPG' ng-model='attributeName' required />
+      <div ng-show='visible.auto && visible.attributes' class='slide'>
+        <h1>Automatic Attribute Selection</h1>
+      </div>
+
+      <div ng-show='visible.manual && visible.attributes' class='slide'>
+        <h1>Manual Attribute Selection</h1>
+        <form ng-submit='submitManualAttribute()'>
+          <label for='manualAttribute'>Attribute name:</label>
+          <input type='text' id='manualAttribute' placeholder='e.g. MPG'
+                ng-model='attributeName' required />
           <input type='submit' id='submit' value='Submit Attribute' />
-          <input type='button' value='Next' ng-click='doneAttribute()'/>
+          <input type='button' value='Next' ng-click='doneManualAttribute()'/>
         </form>
       </div>
 
       <!-- Weights div -->
-      <div ng-show='showWeights' class='slide'>
-        <h1>Attributes</h1>
+      <div ng-show='visible.weights' class='slide'>
+        <h1>Weight Elicitation</h1>
         Drag the slider towards the attribute you care more about.
         <br />
         <div ng-repeat='elem in elemList'>
           {{ elem.pair.leftVal }}
           <!-- TODO: Default value -->
           <!-- TODO: Display current value -->
-          <input type='range' min='1' max='9' ng-model='elem.comparison' required />
+          <input type='range' min='1' max='9'
+                ng-model='elem.comparison' required />
           {{ elem.pair.rightVal }}
         </div>
         <input type='button' value='Next' ng-click='submitWeight()'/>
       </div>
 
       <!-- Alternatives div -->
-      <div ng-show='showAlternatives' class='slide'>
+      <div ng-show='visible.alternatives' class='slide'>
         <h1>Alternatives</h1>
-        <form name='alternativeForm' ng-submit='submitAlternative()'>
+        <form ng-submit='submitManualAlternative()'>
           <label for='altName'>Name:</label>
-          <input type='text' id='altName' placeholder='e.g. Honda Civic' ng-model='alternativeName' required />
+          <input type='text' id='altName' placeholder='e.g. Honda Civic'
+                ng-model='manualAlternativeName' required />
           <br />
           <label for='altCost'>Cost:</label>
           <!-- TODO: Update placeholder to currency -->
-          <input type='number' id='altCost' placeholder='e.g. 3000' ng-model='alternativeCost' required />
+          <input type='number' id='altCost' placeholder='e.g. 3000'
+                ng-model='manualAlternativeCost' required />
           <br />
           <div ng-repeat='child in vals'>
             {{ child.name }} value:
@@ -89,10 +115,11 @@
           </div>
           <input type='submit' id='submit' value='Submit Alternative' />
         </form>
-        <input type='button' value='Next' ng-click='doneAlternative()'/>
+        <input type='button' value='Next' ng-click='doneManualAlternative()'/>
       </div>
+
       <!-- Results div -->
-      <div ng-show='showResults' class='slide'>
+      <div ng-show='visible.results' class='slide'>
         <h1>Results</h1>
         <canvas id='resultsChart'></canvas>
         <br />
@@ -125,8 +152,16 @@
         <input type='button' value='Done' ng-click='doneResult()'/>
       </div>
 
+      <pre>
+        {{ visible | json }}
+        {{ data | json }}
+      </pre>
+
     </div>
 
+    <div id='footer'>
+      Copyright 2017 Benjamin Noble. Last updated 8 May 2017.
+    </div>
   </div>
 </body>
 </html>

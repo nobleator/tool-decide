@@ -6,65 +6,97 @@ var dtApp = angular.module('dtApp', []);
 //TODO: Expand for sub-attributes
 
 dtApp.controller('mainCtrl', function($scope) {
-  console.log('In mainCtrl...');
-  $scope.topic = {name: '', children: [], weights: {}};
-  /*
-  $scope.alternatives = [{name: name,
-                        utility: 0,
-                        cost: 0,
-                        utilityPerCost: 0,
-                        values: {child_name: value}}]
-  */
-  $scope.alternatives = [];
-  $scope.alternativeName = '';
-  $scope.alternativeCost = '';
-  $scope.vals = {};
+  // Set starting slides visibility
+  var initialize = function() {
+    $scope.visible = {type: true,
+                      auto: false,
+                      manual: false,
+                      topic: false,
+                      attributes: false,
+                      weights: false,
+                      alternatives: false,
+                      results: false};
+    $scope.data = {name: '',
+                  children: [],
+                  weights: {},
+                  alternatives: []};
+    $scope.alternatives = [];
+    $scope.alternativeName = '';
+    $scope.alternativeCost = '';
+    $scope.vals = {};
+  };
 
-  // Set starting values for showing/hiding divs
-  $scope.showTopic = true;
-  $scope.showAttributes = false;
-  $scope.showWeights = false;
-  $scope.showAlternatives = false;
-  $scope.showResults = false;
+  initialize();
+
+  // Begin automatic path
+  $scope.automatic = function () {
+    // TODO: Fix temporary data for topic choices
+    $scope.topicSelection = null;
+    $scope.autoTopics = [{name: 'car',
+                          criteria: ['MPG','Speed','Comfort']},
+                        {name: 'home',
+                          criteria: ['COL','Schools','Walkability']},
+                        {name: 'job',
+                          criteria: ['Training','Flexibility','Career advancement']}];
+
+    $scope.visible.type = false;
+    $scope.visible.auto = true;
+    $scope.visible.topic = true;
+  };
+  // Begin manual path
+  $scope.manual = function () {
+    $scope.visible.type = false;
+    $scope.visible.manual = true;
+    $scope.visible.topic = true;
+  };
+
+  $scope.submitAutoTopic = function() {
+    console.log($scope.topicSelection);
+    $scope.data.name = $scope.topicSelection;
+
+    $scope.visible.topic = false;
+    $scope.visible.weights = true;
+  }
 
   // On submit, set/change topic name
-  $scope.submitTopic = function() {
-    // topic.name refers to the name field in the topic object
-    // topicName refers to the ng-model directive
-    $scope.topic.name = this.topicName;
-    $scope.topicName = '';
-    // Change visibility
-    $scope.showTopic = false;
-    $scope.showAttributes = true;
+  $scope.submitManualTopic = function() {
+    // data.name refers to the name field in the topic object
+    // topicSelection refers to the ng-model directive
+    $scope.data.name = $scope.topicSelection;
+    $scope.topicSelection = '';
+    // Change slide visibility
+    $scope.visible.topic = false;
+    $scope.visible.attributes = true;
   };
   // On submit, add attributes
-  $scope.submitAttribute = function() {
+  $scope.submitManualAttribute = function() {
     // topic.children refers to the children field in the topic object
-    // attributeName refers to the ng-model directive
-    $scope.topic.children.push(this.attributeName);
+    // manualAttributeName refers to the ng-model directive
+    $scope.data.children.push(this.attributeName);
     $scope.attributeName = '';
   };
   // When finished adding attributes, set weights
-  $scope.doneAttribute = function() {
+  $scope.doneManualAttribute = function() {
     // Set list for iteration in weights
     $scope.elemList = [];
-    for (var i = 0; i < $scope.topic.children.length; i++) {
-      for (var j = i+1; j < $scope.topic.children.length; j++) {
-        var temp = {pair: {leftVal: $scope.topic.children[i],
-                          rightVal: $scope.topic.children[j]},
+    var listLen = $scope.data.children.length;
+    for (var i = 0; i < listLen; i++) {
+      for (var j = i+1; j < listLen; j++) {
+        var temp = {pair: {leftVal: $scope.data.children[i],
+                          rightVal: $scope.data.children[j]},
                     indices: {leftInd: i, rightInd: j},
                     comparison: 0};
         $scope.elemList.push(temp);
       }
     }
 
-    $scope.showAttributes = false;
-    $scope.showWeights = true;
+    $scope.visible.attributes = false;
+    $scope.visible.weights = true;
   };
 
   $scope.submitWeight = function() {
     // Set original weightMatrix with user inputs
-    var listLen = $scope.topic.children.length;
+    var listLen = $scope.data.children.length;
     var weightMatrix = math.ones(listLen, listLen);
     for (var i = 0; i < $scope.elemList.length; i++) {
       var indi = $scope.elemList[i].indices.leftInd;
@@ -102,62 +134,60 @@ dtApp.controller('mainCtrl', function($scope) {
     for (var i = 0; i < listLen; i++) {
       var tempArr = normWeightMatrix['_data'][i];
       rowAvg[i] = math.mean(tempArr);
-      $scope.topic.weights[$scope.topic.children[i]] = rowAvg[i];
+      $scope.data.weights[$scope.data.children[i]] = rowAvg[i];
     }
 
-    // TODO: Issue with ng-repeat and objects vs lists -> Resolved?
     $scope.vals = [];
     for (var i = 0; i < listLen; i++) {
-      var temp = {name: $scope.topic.children[i],
+      var temp = {name: $scope.data.children[i],
                   value: ''};
       $scope.vals.push(temp);
     }
 
-    $scope.showWeights = false;
-    $scope.showAlternatives = true;
+    $scope.visible.weights = false;
+    $scope.visible.alternatives = true;
   };
 
-  $scope.submitAlternative = function() {
+  $scope.submitManualAlternative = function() {
     //
     var newVals = {};
     for (var i = 0; i < $scope.vals.length; i++) {
       newVals[$scope.vals[i].name] = $scope.vals[i].value;
     }
-    // TODO: Calculate utility -> Complete?
     var tUtility = 0;
-    var listLen = $scope.topic.children.length;
+    var listLen = $scope.data.children.length;
     for (var i = 0; i < listLen; i++) {
-      var child = $scope.topic.children[i];
-      tUtility += newVals[child]*$scope.topic.weights[child];
+      var child = $scope.data.children[i];
+      tUtility += newVals[child]*$scope.data.weights[child];
     }
-    var tCost = parseFloat($scope.alternativeCost);
-    var temp = {name: $scope.alternativeName,
+    var tCost = parseFloat($scope.manualAlternativeCost);
+    var temp = {name: $scope.manualAlternativeName,
                 utility: tUtility,
                 cost: tCost,
                 utilityPerCost: tUtility/tCost,
                 values: newVals}
-    $scope.alternatives.push(temp);
-    $scope.alternativeName = '';
-    $scope.alternativeCost = '';
+    $scope.data.alternatives.push(temp);
+    $scope.manualAlternativeName = '';
+    $scope.manualAlternativeCost = '';
     for (var i = 0; i < $scope.vals.length; i++) {
       $scope.vals[i].value = '';
     }
   };
   //
-  $scope.doneAlternative = function() {
+  $scope.doneManualAlternative = function() {
     var chartData = [];
-    for (var i = 0; i < $scope.alternatives.length; i++) {
+    for (var i = 0; i < $scope.data.alternatives.length; i++) {
       // TODO: Better color generation
       // Generate a new random color for each alternative
       var color = 'rgba(';
-      color += String(85*(i/$scope.alternatives.length)) + ',';
-      color += String(85*(i/$scope.alternatives.length)) + ',';
-      color += String(255*(i/$scope.alternatives.length)) + ',';
+      color += String(85*(i/$scope.data.alternatives.length)) + ',';
+      color += String(85*(i/$scope.data.alternatives.length)) + ',';
+      color += String(255*(i/$scope.data.alternatives.length)) + ',';
       color += '0.5)';
-      var tempData = {label: $scope.alternatives[i].name,
+      var tempData = {label: $scope.data.alternatives[i].name,
                       data: [{
-                        x: $scope.alternatives[i].cost,
-                        y: $scope.alternatives[i].utility}],
+                        x: $scope.data.alternatives[i].cost,
+                        y: $scope.data.alternatives[i].utility}],
                       backgroundColor: color
                       };
       chartData.push(tempData);
@@ -198,20 +228,13 @@ dtApp.controller('mainCtrl', function($scope) {
     $scope.orderByField = 'name';
     $scope.ascending = false;
 
-    $scope.showAlternatives = false;
-    $scope.showResults = true;
+    $scope.visible.alternatives = false;
+    $scope.visible.results = true;
   };
   //
   $scope.doneResult = function() {
     // TODO: Save results somewhere to access later? -> v2.0
-    // Zero out fields
-    $scope.topic = {name: '', children: [], weights: {}};
-    $scope.alternatives = [];
-    $scope.alternativeName = '';
-    $scope.alternativeCost = '';
-    $scope.vals = {};
-
-    $scope.showResults = false;
-    $scope.showTopic = true;
+    // Zero out fields and start over
+    initialize();
   };
 });
