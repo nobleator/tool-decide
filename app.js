@@ -20,7 +20,7 @@ dtApp.controller('mainCtrl', function($scope) {
                   children: [],
                   weights: {},
                   alternatives: []};
-    $scope.alternatives = [];
+    $scope.tempChildren = {};
     $scope.alternativeName = '';
     $scope.alternativeCost = '';
     $scope.vals = {};
@@ -28,16 +28,132 @@ dtApp.controller('mainCtrl', function($scope) {
 
   initialize();
 
-  // Begin automatic path
+  // Begin automatic path. Get auto-generated data.
   $scope.automatic = function () {
-    // TODO: Fix temporary data for topic choices
+    // TODO: Temporary data for topic choices
     $scope.topicSelection = null;
-    $scope.autoTopics = [{name: 'car',
-                          criteria: ['MPG','Speed','Comfort']},
-                        {name: 'home',
-                          criteria: ['COL','Schools','Walkability']},
-                        {name: 'job',
-                          criteria: ['Training','Flexibility','Career advancement']}];
+    $scope.autoTopics = [{name: 'Car',
+                          criteria: ['MPG',
+                                    'Top speed',
+                                    'Acceleration',
+                                    'Handling',
+                                    'Comfort',
+                                    'Cargo space']},
+                        {name: 'Home',
+                          criteria: ['Schools',
+                                    'Walkability',
+                                    'Culture',
+                                    'Crime rates',
+                                    'Job opportunities',
+                                    'Climate']},
+                        {name: 'Job',
+                          criteria: ['Training',
+                                    'Flexible remote work',
+                                    'Career advancement',
+                                    'Casual environment',
+                                    'Employee stock',
+                                    'Personal office']}
+                        ];
+    $scope.autoAlternatives = [{topic: 'Car',
+                                alternatives: [{name: 'Mustang',
+                                                cost: 35000,
+                                                'MPG': 23,
+                                                'Top speed': 150,
+                                                'Acceleration': 20,
+                                                'Handling': 10,
+                                                'Comfort': 5,
+                                                'Cargo space': 5},
+                                              {name: 'F-150',
+                                                cost: 50000,
+                                                'MPG': 12,
+                                                'Top speed': 70,
+                                                'Acceleration': 10,
+                                                'Handling': 5,
+                                                'Comfort': 8,
+                                                'Cargo space': 50},
+                                              {name: 'Tesla',
+                                                cost: 60000,
+                                                'MPG': 200,
+                                                'Top speed': 120,
+                                                'Acceleration': 18,
+                                                'Handling': 15,
+                                                'Comfort': 20,
+                                                'Cargo space': 15},
+                                              {name: 'CR-V',
+                                                cost: 30000,
+                                                'MPG': 18,
+                                                'Top speed': 90,
+                                                'Acceleration': 14,
+                                                'Handling': 7,
+                                                'Comfort': 10,
+                                                'Cargo space': 30}]},
+                              {topic: 'Home',
+                              alternatives: [{name: 'Portland',
+                                              cost: 90000,
+                                              'Schools': 7,
+                                              'Walkability': 8,
+                                              'Culture': 10,
+                                              'Crime rates': 10,
+                                              'Job opportunities': 7,
+                                              'Climate': 9},
+                                            {name: 'Seattle',
+                                              cost: 100000,
+                                              'Schools': 10,
+                                              'Walkability': 7,
+                                              'Culture': 7,
+                                              'Crime rates': 9,
+                                              'Job opportunities': 9,
+                                              'Climate': 8},
+                                            {name: 'San Francisco',
+                                              cost: 130000,
+                                              'Schools': 9,
+                                              'Walkability': 9,
+                                              'Culture': 9,
+                                              'Crime rates': 8,
+                                              'Job opportunities': 10,
+                                              'Climate': 10},
+                                            {name: 'Austin',
+                                              cost: 80000,
+                                              'Schools': 8,
+                                              'Walkability': 6,
+                                              'Culture': 8,
+                                              'Crime rates': 7,
+                                              'Job opportunities': 8,
+                                              'Climate': 7}]},
+                              {topic: 'Job',
+                              alternatives: [{name: 'Google',
+                                              cost: 150000,
+                                              'Training': 10,
+                                              'Flexible remote work': 10,
+                                              'Career advancement': 9,
+                                              'Casual environment': 10,
+                                              'Employee stock': 7,
+                                              'Personal office': 7},
+                                            {name: 'Facebook',
+                                              cost: 140000,
+                                              'Training': 9,
+                                              'Flexible remote work': 9,
+                                              'Career advancement': 10,
+                                              'Casual environment': 9,
+                                              'Employee stock': 9,
+                                              'Personal office': 8},
+                                            {name: 'Amazon',
+                                              cost: 125000,
+                                              'Training': 7,
+                                              'Flexible remote work': 8,
+                                              'Career advancement': 7,
+                                              'Casual environment': 7,
+                                              'Employee stock': 10,
+                                              'Personal office': 10},
+                                            {name: 'Apple',
+                                              cost: 130000,
+                                              'Training': 8,
+                                              'Flexible remote work': 7,
+                                              'Career advancement': 8,
+                                              'Casual environment': 8,
+                                              'Employee stock': 8,
+                                              'Personal office': 9}]}
+                              ];
 
     $scope.visible.type = false;
     $scope.visible.auto = true;
@@ -49,14 +165,22 @@ dtApp.controller('mainCtrl', function($scope) {
     $scope.visible.manual = true;
     $scope.visible.topic = true;
   };
-
+  // After a topic has been selected, generate an object with the criteria
+  // of the selected topic as keys and a boolean as the value. Change the
+  // boolean to select checkboxes.
   $scope.submitAutoTopic = function() {
-    console.log($scope.topicSelection);
-    $scope.data.name = $scope.topicSelection;
+    $scope.data.name = $scope.topicSelection.name;
+    for (var i = 0; i < $scope.autoTopics.length; i++) {
+      if ($scope.autoTopics[i].name == $scope.data.name) {
+        for (var j = 0; j < $scope.autoTopics[i].criteria.length; j++) {
+          $scope.tempChildren[$scope.autoTopics[i].criteria[j]] = false;
+        }
+      }
+    }
 
     $scope.visible.topic = false;
-    $scope.visible.weights = true;
-  }
+    $scope.visible.attributes = true;
+  };
 
   // On submit, set/change topic name
   $scope.submitManualTopic = function() {
@@ -68,15 +192,8 @@ dtApp.controller('mainCtrl', function($scope) {
     $scope.visible.topic = false;
     $scope.visible.attributes = true;
   };
-  // On submit, add attributes
-  $scope.submitManualAttribute = function() {
-    // topic.children refers to the children field in the topic object
-    // manualAttributeName refers to the ng-model directive
-    $scope.data.children.push(this.attributeName);
-    $scope.attributeName = '';
-  };
-  // When finished adding attributes, set weights
-  $scope.doneManualAttribute = function() {
+
+  var elicitWeights = function() {
     // Set list for iteration in weights
     $scope.elemList = [];
     var listLen = $scope.data.children.length;
@@ -89,12 +206,34 @@ dtApp.controller('mainCtrl', function($scope) {
         $scope.elemList.push(temp);
       }
     }
+  };
 
+  $scope.submitAutoAttribute = function() {
+    for (var property in $scope.tempChildren) {
+      if ($scope.tempChildren[property] == true) {
+        $scope.data.children.push(property);
+      }
+    }
+    elicitWeights();
+    $scope.visible.attributes = false;
+    $scope.visible.weights = true;
+  };
+  // On submit, add attributes
+  $scope.submitManualAttribute = function() {
+    // topic.children refers to the children field in the topic object
+    // manualAttributeName refers to the ng-model directive
+    $scope.data.children.push(this.attributeName);
+    $scope.attributeName = '';
+  };
+  // When finished adding attributes, set weights
+  $scope.doneManualAttribute = function() {
+    elicitWeights();
     $scope.visible.attributes = false;
     $scope.visible.weights = true;
   };
 
   $scope.submitWeight = function() {
+    // On submission of preferences, calculate specific weights
     // Set original weightMatrix with user inputs
     var listLen = $scope.data.children.length;
     var weightMatrix = math.ones(listLen, listLen);
@@ -145,44 +284,48 @@ dtApp.controller('mainCtrl', function($scope) {
     }
 
     $scope.visible.weights = false;
-    $scope.visible.alternatives = true;
+    if ($scope.visible.auto) {
+      calculateUtility();
+      graphResults();
+      $scope.visible.results = true;
+    } else {
+      $scope.visible.alternatives = true;
+    }
   };
 
-  $scope.submitManualAlternative = function() {
-    //
-    var newVals = {};
-    for (var i = 0; i < $scope.vals.length; i++) {
-      newVals[$scope.vals[i].name] = $scope.vals[i].value;
+  var calculateUtility = function() {
+    // TODO: Set alternatives list as soon as 'Automatic' is selected?
+    for (var i = 0; i < $scope.autoAlternatives.length; i++) {
+      if ($scope.autoAlternatives[i].topic == $scope.data.name) {
+        var alts = $scope.autoAlternatives[i].alternatives;
+      }
     }
-    var tUtility = 0;
-    var listLen = $scope.data.children.length;
-    for (var i = 0; i < listLen; i++) {
-      var child = $scope.data.children[i];
-      tUtility += newVals[child]*$scope.data.weights[child];
-    }
-    var tCost = parseFloat($scope.manualAlternativeCost);
-    var temp = {name: $scope.manualAlternativeName,
-                utility: tUtility,
-                cost: tCost,
-                utilityPerCost: tUtility/tCost,
-                values: newVals}
-    $scope.data.alternatives.push(temp);
-    $scope.manualAlternativeName = '';
-    $scope.manualAlternativeCost = '';
-    for (var i = 0; i < $scope.vals.length; i++) {
-      $scope.vals[i].value = '';
+    for (var i = 0; i < alts.length; i++) {
+      var tUtility = 0;
+      var listLen = $scope.data.children.length;
+      for (var j = 0; j < listLen; j++) {
+        var attribute = $scope.data.children[j];
+        tUtility += alts[i][attribute]*$scope.data.weights[attribute];
+      }
+      // TODO: temp.values?
+      var temp = {name: alts[i].name,
+                  utility: tUtility,
+                  cost: alts[i].cost,
+                  utilityPerCost: tUtility/alts[i].cost,
+                  values: {}};
+      $scope.data.alternatives.push(temp);
     }
   };
-  //
-  $scope.doneManualAlternative = function() {
+
+  var graphResults = function() {
     var chartData = [];
     for (var i = 0; i < $scope.data.alternatives.length; i++) {
       // TODO: Better color generation
       // Generate a new random color for each alternative
       var color = 'rgba(';
-      color += String(85*(i/$scope.data.alternatives.length)) + ',';
-      color += String(85*(i/$scope.data.alternatives.length)) + ',';
-      color += String(255*(i/$scope.data.alternatives.length)) + ',';
+      color += String(Math.floor(Math.random()*255)+1) + ',';
+      color += String(Math.floor(Math.random()*255)+1) + ',';
+      color += String(Math.floor(Math.random()*255)+1) + ',';
       color += '0.5)';
       var tempData = {label: $scope.data.alternatives[i].name,
                       data: [{
@@ -227,6 +370,36 @@ dtApp.controller('mainCtrl', function($scope) {
     // Starting sorting field and direction
     $scope.orderByField = 'name';
     $scope.ascending = false;
+  };
+
+  $scope.submitManualAlternative = function() {
+    //
+    var newVals = {};
+    for (var i = 0; i < $scope.vals.length; i++) {
+      newVals[$scope.vals[i].name] = $scope.vals[i].value;
+    }
+    var tUtility = 0;
+    var listLen = $scope.data.children.length;
+    for (var i = 0; i < listLen; i++) {
+      var child = $scope.data.children[i];
+      tUtility += newVals[child]*$scope.data.weights[child];
+    }
+    var tCost = parseFloat($scope.manualAlternativeCost);
+    var temp = {name: $scope.manualAlternativeName,
+                utility: tUtility,
+                cost: tCost,
+                utilityPerCost: tUtility/tCost,
+                values: newVals}
+    $scope.data.alternatives.push(temp);
+    $scope.manualAlternativeName = '';
+    $scope.manualAlternativeCost = '';
+    for (var i = 0; i < $scope.vals.length; i++) {
+      $scope.vals[i].value = '';
+    }
+  };
+  //
+  $scope.doneManualAlternative = function() {
+    graphResults();
 
     $scope.visible.alternatives = false;
     $scope.visible.results = true;
