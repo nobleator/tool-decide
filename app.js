@@ -28,6 +28,29 @@ dtApp.controller('mainCtrl', function($scope) {
 
   initialize();
 
+  $scope.back = function(currentSlide) {
+    // TODO: Reset variables on back (depending on the slide)
+    if (currentSlide == 'topic'){
+      $scope.visible.topic = false;
+      $scope.visible.type = true;
+    } else if(currentSlide == 'attributes') {
+      $scope.visible.attributes = false;
+      $scope.visible.topic = true;
+    } else if(currentSlide == 'weights') {
+      $scope.visible.weights = false;
+      $scope.visible.attributes = true;
+    } else if(currentSlide == 'alternatives') {
+      $scope.visible.alternatives = false;
+      $scope.visible.weights = true;
+    } else if(currentSlide == 'results') {
+      $scope.visible.results = false;
+      if ($scope.visible.auto) {
+        $scope.visible.weights = true;
+      } else {
+        $scope.visible.alternatives = true;
+      }
+    }
+  };
   // Begin automatic path. Get auto-generated data.
   $scope.automatic = function () {
     // TODO: Temporary data for topic choices

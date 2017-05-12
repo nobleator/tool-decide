@@ -11,6 +11,8 @@ Go to: https://murmuring-tundra-71478.herokuapp.com, follow the instructions.
 - [x] Manual entry
 - [x] Scatter plot and table of results
 - [x] Input validation
+### v1.1
+- [x] Front-end skeleton for automatic selection
 ### v2.0
 - [ ] Auto-import data
 - [ ] User accounts
