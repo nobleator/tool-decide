@@ -67,6 +67,11 @@
       <!-- Attributes div -->
       <div ng-show='visible.auto && visible.attributes' class='slide'>
         <h1>Automatic Attribute Selection</h1>
+        <div ng-repeat='(k,v) in tempChildren'>
+          <label for='k'>{{ k }}</label>
+          <input id='k' type='checkbox' ng-model='tempChildren[k]' />
+        </div>
+        <input type='button' value='Next' ng-click='submitAutoAttribute()' />
       </div>
 
       <div ng-show='visible.manual && visible.attributes' class='slide'>
@@ -141,7 +146,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat='alt in alternatives | orderBy:orderByField:ascending'>
+            <tr ng-repeat='alt in data.alternatives | orderBy:orderByField:ascending'>
               <td>{{ alt.name }}</td>
               <td>{{ alt.utility }}</td>
               <td>{{ alt.cost }}</td>
@@ -152,15 +157,10 @@
         <input type='button' value='Done' ng-click='doneResult()'/>
       </div>
 
-      <pre>
-        {{ visible | json }}
-        {{ data | json }}
-      </pre>
-
     </div>
 
     <div id='footer'>
-      Copyright 2017 Benjamin Noble. Last updated 8 May 2017.
+      Copyright 2017 Benjamin Noble. Last updated 11 May 2017.
     </div>
   </div>
 </body>
