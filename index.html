@@ -39,6 +39,9 @@
       <!-- Select automatic or manual entry -->
       <div ng-show='visible.type' class='slide'>
         <h1>Type of Entry</h1>
+        <p>
+          Would you like to select from a pre-built list of options ("Automatic"), or enter your own ("Manual")?
+        </p>
         <input type='button' value='Automatic' ng-click='automatic()' /> or
         <input type='button' value='Manual' ng-click='manual()' />
       </div>
@@ -46,36 +49,57 @@
       <!-- Topic div -->
       <div ng-show='visible.auto && visible.topic' class='slide'>
         <h1>Automatic Topic Selection</h1>
+        <p>
+          Select the topic you would like to explore.
+        </p>
         <form ng-submit='submitAutoTopic()'>
-          <select ng-model='topicSelection'
+          <select ng-model='topicSelection' required
                   ng-options='aT.name for aT in autoTopics'>
           </select>
           <input type='submit' id='submit' value='Submit Topic' />
         </form>
+        <input id='back-button' type='button' value='Back' ng-click="back('topic')" />
       </div>
 
       <div ng-show='visible.manual && visible.topic' class='slide'>
         <h1>Manual Topic Entry</h1>
+        <p>
+          Input the topic you would like to explore.
+        </p>
         <form ng-submit='submitManualTopic()'>
           <label for='manualTopic'>Topic name:</label>
           <input type='text' id='manualTopic' placeholder='e.g. Cars'
                 ng-model='topicSelection' required />
           <input type='submit' id='submit' value='Next' />
         </form>
+        <input id='back-button' type='button' value='Back' ng-click="back('topic')" />
       </div>
 
       <!-- Attributes div -->
       <div ng-show='visible.auto && visible.attributes' class='slide'>
         <h1>Automatic Attribute Selection</h1>
-        <div ng-repeat='(k,v) in tempChildren'>
-          <label for='k'>{{ k }}</label>
-          <input id='k' type='checkbox' ng-model='tempChildren[k]' />
-        </div>
+        <p>
+          Select attributes you care about from the list below.
+        </p>
+        <table style='margin: 0 auto;'>
+          <tr ng-repeat='(k,v) in tempChildren' >
+            <td>
+              <input id='k' type='checkbox' ng-model='tempChildren[k]' />
+            </td>
+            <td style='text-align: left;'>
+              <label for='k'>{{ k }}</label>
+            </td>
+          </tr>
+        </table>
+        <input id='back-button' type='button' value='Back' ng-click="back('attributes')" />
         <input type='button' value='Next' ng-click='submitAutoAttribute()' />
       </div>
 
       <div ng-show='visible.manual && visible.attributes' class='slide'>
         <h1>Manual Attribute Selection</h1>
+        <p>
+          Input attributes manually.
+        </p>
         <form ng-submit='submitManualAttribute()'>
           <label for='manualAttribute'>Attribute name:</label>
           <input type='text' id='manualAttribute' placeholder='e.g. MPG'
@@ -83,51 +107,66 @@
           <input type='submit' id='submit' value='Submit Attribute' />
           <input type='button' value='Next' ng-click='doneManualAttribute()'/>
         </form>
+        <input id='back-button' type='button' value='Back' ng-click="back('attributes')" />
       </div>
 
       <!-- Weights div -->
       <div ng-show='visible.weights' class='slide'>
         <h1>Weight Elicitation</h1>
-        Drag the slider towards the attribute you care more about.
-        <br />
-        <div ng-repeat='elem in elemList'>
-          {{ elem.pair.leftVal }}
-          <!-- TODO: Default value -->
-          <!-- TODO: Display current value -->
-          <input type='range' min='1' max='9'
-                ng-model='elem.comparison' required />
-          {{ elem.pair.rightVal }}
-        </div>
+        <p>
+          Drag the slider towards the attribute you care more about.
+        </p>
+        <table style='margin: 0 auto;'>
+          <tr ng-repeat='elem in elemList'>
+            <td style='text-align: right;'>
+              {{ elem.pair.leftVal }}
+            </td>
+            <!-- TODO: Default value -->
+            <!-- TODO: Display current value -->
+            <td>
+              <input type='range' min='1' max='9'
+                    ng-model='elem.comparison' required />
+            </td>
+            <td style='text-align: left;'>
+              {{ elem.pair.rightVal }}
+            </td>
+          </tr>
+        </table>
+        <input id='back-button' type='button' value='Back' ng-click="back('weights')" />
         <input type='button' value='Next' ng-click='submitWeight()'/>
       </div>
 
       <!-- Alternatives div -->
       <div ng-show='visible.alternatives' class='slide'>
         <h1>Alternatives</h1>
+        <p>
+          Input the name, cost, and attribute values for an alternative. To enter another alternative, click "Submmit Alternative". Once you are done adding alternatives, click "Next".
+        </p>
         <form ng-submit='submitManualAlternative()'>
           <label for='altName'>Name:</label>
           <input type='text' id='altName' placeholder='e.g. Honda Civic'
                 ng-model='manualAlternativeName' required />
-          <br />
           <label for='altCost'>Cost:</label>
           <!-- TODO: Update placeholder to currency -->
           <input type='number' id='altCost' placeholder='e.g. 3000'
                 ng-model='manualAlternativeCost' required />
-          <br />
           <div ng-repeat='child in vals'>
             {{ child.name }} value:
             <input type='number' ng-model='child.value' required />
           </div>
           <input type='submit' id='submit' value='Submit Alternative' />
         </form>
+        <input id='back-button' type='button' value='Back' ng-click="back('alternatives')" />
         <input type='button' value='Next' ng-click='doneManualAlternative()'/>
       </div>
 
       <!-- Results div -->
       <div ng-show='visible.results' class='slide'>
         <h1>Results</h1>
+        <p>
+          Based on your inputs, here are your results.
+        </p>
         <canvas id='resultsChart'></canvas>
-        <br />
         <table id='resultsTable'>
           <thead>
             <tr>
@@ -154,6 +193,7 @@
             </tr>
           </tbody>
         </table>
+        <input id='back-button' type='button' value='Back' ng-click="back('results')" />
         <input type='button' value='Done' ng-click='doneResult()'/>
       </div>
 

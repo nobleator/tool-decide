@@ -34,6 +34,7 @@ html, body {
   font-size: 150%;
 	font-family: 'Open Sans', sans-serif;
 	line-height: 2em;
+  padding-bottom: 1em;
   color: #2c3e50;
 }
 .slide {
@@ -49,7 +50,7 @@ html, body {
 #resultsChart {
   width: 100%;
   height: auto;
-  margin: 0 auto;
+  margin: 1em auto;
 }
 #resultsTable {
   margin: 0 auto;
