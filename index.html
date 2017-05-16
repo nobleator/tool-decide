@@ -53,7 +53,7 @@
           Select the topic you would like to explore.
         </p>
         <form ng-submit='submitAutoTopic()'>
-          <select ng-model='topicSelection' required
+          <select ng-model='autoTopicSelection' required
                   ng-options='aT.name for aT in autoTopics'>
           </select>
           <input type='submit' id='submit' value='Submit Topic' />
@@ -69,7 +69,7 @@
         <form ng-submit='submitManualTopic()'>
           <label for='manualTopic'>Topic name:</label>
           <input type='text' id='manualTopic' placeholder='e.g. Cars'
-                ng-model='topicSelection' required />
+                ng-model='manualTopicSelection' required />
           <input type='submit' id='submit' value='Next' />
         </form>
         <input id='back-button' type='button' value='Back' ng-click="back('topic')" />
@@ -164,7 +164,7 @@
       <div ng-show='visible.results' class='slide'>
         <h1>Results</h1>
         <p>
-          Based on your inputs, here are your results.
+          Based on your inputs, here are your results. You can sort the results table by clicking on the column headers.
         </p>
         <canvas id='resultsChart'></canvas>
         <table id='resultsTable'>

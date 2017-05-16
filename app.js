@@ -3,8 +3,19 @@
 //
 
 var dtApp = angular.module('dtApp', []);
-//TODO: Expand for sub-attributes
+// TODO: Expand for sub-attributes
+/* TODO: Restructure data
 
+criteria = {topicName: [criteriaName, ...], ...}
+criteriaWeights = {criteriaName: weight, ...}
+criteriaChildren = {criteriaName: [children, ...], ...}
+
+alternatives = {topicName: [alternativeName, ...], ...}
+alternativeCosts = {alternativeName: cost, ...}
+alternativeValues = {alternativeName: {criteriaName: value, ...}, ...}
+
+Switch to bracket notation?
+*/
 dtApp.controller('mainCtrl', function($scope) {
   // Set starting slides visibility
   var initialize = function() {
@@ -31,20 +42,27 @@ dtApp.controller('mainCtrl', function($scope) {
   $scope.back = function(currentSlide) {
     // TODO: Reset variables on back (depending on the slide)
     if (currentSlide == 'topic'){
+      initialize();
       $scope.visible.topic = false;
       $scope.visible.type = true;
     } else if(currentSlide == 'attributes') {
+      $scope.data.name = '';
+      $scope.data.children = [];
+      $scope.tempChildren = {};
       $scope.visible.attributes = false;
       $scope.visible.topic = true;
     } else if(currentSlide == 'weights') {
+      $scope.data.children = [];
       $scope.visible.weights = false;
       $scope.visible.attributes = true;
     } else if(currentSlide == 'alternatives') {
+      $scope.data.alternatives = [];
       $scope.visible.alternatives = false;
       $scope.visible.weights = true;
     } else if(currentSlide == 'results') {
       $scope.visible.results = false;
       if ($scope.visible.auto) {
+        $scope.data.alternatives = [];
         $scope.visible.weights = true;
       } else {
         $scope.visible.alternatives = true;
@@ -54,7 +72,6 @@ dtApp.controller('mainCtrl', function($scope) {
   // Begin automatic path. Get auto-generated data.
   $scope.automatic = function () {
     // TODO: Temporary data for topic choices
-    $scope.topicSelection = null;
     $scope.autoTopics = [{name: 'Car',
                           criteria: ['MPG',
                                     'Top speed',
@@ -192,7 +209,7 @@ dtApp.controller('mainCtrl', function($scope) {
   // of the selected topic as keys and a boolean as the value. Change the
   // boolean to select checkboxes.
   $scope.submitAutoTopic = function() {
-    $scope.data.name = $scope.topicSelection.name;
+    $scope.data.name = $scope.autoTopicSelection.name;
     for (var i = 0; i < $scope.autoTopics.length; i++) {
       if ($scope.autoTopics[i].name == $scope.data.name) {
         for (var j = 0; j < $scope.autoTopics[i].criteria.length; j++) {
@@ -209,8 +226,8 @@ dtApp.controller('mainCtrl', function($scope) {
   $scope.submitManualTopic = function() {
     // data.name refers to the name field in the topic object
     // topicSelection refers to the ng-model directive
-    $scope.data.name = $scope.topicSelection;
-    $scope.topicSelection = '';
+    $scope.data.name = $scope.manualTopicSelection;
+    $scope.manualTopicSelection = '';
     // Change slide visibility
     $scope.visible.topic = false;
     $scope.visible.attributes = true;
@@ -265,7 +282,7 @@ dtApp.controller('mainCtrl', function($scope) {
       var indj = $scope.elemList[i].indices.rightInd;
       var userInput = $scope.elemList[i].comparison;
       weightMatrix['_data'][indi][indj] = userInput;
-      // TODO: Restrict input to 1-9?
+      // Catches zero division error
       if (userInput == 0) {
         weightMatrix['_data'][indj][indi] = 1000;
       }
@@ -429,7 +446,7 @@ dtApp.controller('mainCtrl', function($scope) {
   };
   //
   $scope.doneResult = function() {
-    // TODO: Save results somewhere to access later? -> v2.0
+    // TODO: Save results somewhere to access later?
     // Zero out fields and start over
     initialize();
   };
