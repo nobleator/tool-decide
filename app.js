@@ -360,13 +360,7 @@ dtApp.controller('mainCtrl', function($scope) {
   var graphResults = function() {
     var chartData = [];
     for (var i = 0; i < $scope.data.alternatives.length; i++) {
-      // TODO: Better color generation
-      // Generate a new random color for each alternative
-      var color = 'rgba(';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += '0.5)';
+      var color ='rgba(' +String(r) + ',' +String(g) + ',' +String(b) + ',0.5)';
       var tempData = {label: $scope.data.alternatives[i].name,
                       data: [{
                         x: $scope.data.alternatives[i].cost,
