@@ -360,13 +360,41 @@ dtApp.controller('mainCtrl', function($scope) {
   var graphResults = function() {
     var chartData = [];
     for (var i = 0; i < $scope.data.alternatives.length; i++) {
-      // TODO: Better color generation
-      // Generate a new random color for each alternative
-      var color = 'rgba(';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += String(Math.floor(Math.random()*255)+1) + ',';
-      color += '0.5)';
+      // Initialize RGB variables.
+      var r, g, b;
+      // Find position of color i on a linear color gradient from 0 to 1530.
+      var x = (1530/$scope.data.alternatives.length)*(i+1);
+      // There are three main color ranges, Red(0 to 510), Green(510 to 1020),
+      // and Blue(1020 to 1530).
+      // Each color range has 255 of its main color, plus some amount of the
+      // other colors.
+      // for example, the first half of Red also includes Blue by the function
+      // Blue = 255-x
+      // whereas the second half of Red includes Green by the function
+      // Green = x-255
+      if (x<510){
+        r = 255;
+        g = x - 255;
+        b = 255 - x;
+      }else if (x<1020) {
+        r = 765 - x;
+        g = 255;
+        b = x - 765;
+      }else {
+        r = x - 1275;
+        g = 1275 - x;
+        b = 255;
+      }
+      // Remove decimals
+      r = Math.floor(r);
+      g = Math.floor(g);
+      b = Math.floor(b);
+      // Replace any negative rgb values with zeros
+      r = (Math.sign(r)<0) ? 0 : r;
+      g = (Math.sign(g)<0) ? 0 : g;
+      b = (Math.sign(b)<0) ? 0 : b;
+      // TODO: adjust opacity to accomodate large set of points
+      var color ='rgba(' +String(r) + ',' +String(g) + ',' +String(b) + ',0.5)';
       var tempData = {label: $scope.data.alternatives[i].name,
                       data: [{
                         x: $scope.data.alternatives[i].cost,
