@@ -478,4 +478,31 @@ dtApp.controller('mainCtrl', function($scope) {
     // Zero out fields and start over
     initialize();
   };
+  $scope.downloadResult = function() {
+    // Gather data into array
+    var csvData = [['Name', 'Utility', 'Cost']];
+    var csvRow = [];
+    for (var i = 0; i < $scope.data.alternatives.length; i++) {
+      csvRow = [];
+      csvRow.push(String($scope.data.alternatives[i].name));
+      csvRow.push(String($scope.data.alternatives[i].utility));
+      csvRow.push(String($scope.data.alternatives[i].cost));
+      csvData.push(csvRow);
+    };
+    // Parse array into CSV string
+    var csvString = 'data:text/csv;charset=utf-8,';
+    csvData.forEach(function(infoArray, index) {
+      dataString = infoArray.join(",");
+      csvString += index < csvData.length ? dataString+ "\n" : dataString;
+    });
+    // create a hidden element "link" so that the download can have a name
+    var encodedUri = encodeURI(csvString);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "DecisionAnalysisData.csv"); //name file
+    // add 'link' and click to initiate download
+    document.body.appendChild(link); // Required for FireFox
+    link.click();
+    document.body.removeChild(link); // clean up
+  };
 });
