@@ -479,22 +479,14 @@ dtApp.controller('mainCtrl', function($scope) {
     initialize();
   };
   $scope.downloadResult = function() {
-    // Gather data into array
-    var csvData = [['Name', 'Utility', 'Cost']];
-    var csvRow = [];
+    // Parse data into CSV string 
+    var csvString = 'data:text/csv;charset=utf-8,Name,Utility,Cost\n';
     for (var i = 0; i < $scope.data.alternatives.length; i++) {
-      csvRow = [];
-      csvRow.push(String($scope.data.alternatives[i].name));
-      csvRow.push(String($scope.data.alternatives[i].utility));
-      csvRow.push(String($scope.data.alternatives[i].cost));
-      csvData.push(csvRow);
+      csvString += String($scope.data.alternatives[i].name) + ',';
+      csvString += String($scope.data.alternatives[i].utility) + ',';
+      csvString += String($scope.data.alternatives[i].cost);
+      if ((i+1) < $scope.data.alternatives.length) {csvString += '\n'};
     };
-    // Parse array into CSV string
-    var csvString = 'data:text/csv;charset=utf-8,';
-    csvData.forEach(function(infoArray, index) {
-      dataString = infoArray.join(",");
-      csvString += index < csvData.length ? dataString+ "\n" : dataString;
-    });
     // create a hidden element "link" so that the download can have a name
     var encodedUri = encodeURI(csvString);
     var link = document.createElement("a");
